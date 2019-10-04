@@ -87,13 +87,17 @@ public class VesselContainer {
 				totalForOreEntry.put(currentContents[i].baseType, totalForOreEntry.get(currentContents[i].baseType) != null ? totalForOreEntry.get(currentContents[i].baseType) + currentContentsAmounts[i] : currentContentsAmounts[i]);
 			}
 		}
-		for (Map.Entry<BaseOreType, Integer> e : totalForOreEntry.entrySet()) {
-			BaseOreType baseOreEntry = e.getKey();
-			Integer value = e.getValue();
-			double percentOfOre = (double) value / (double) totalOre * 100D;
-			resultText.append("&emsp;").append(baseOreEntry.presentableName).append(" x ").append(value).append(" (").append(String.format("%.2f", percentOfOre)).append("%)");
-			resultText.append("<br />");
-			percentForOreEntry.put(baseOreEntry, percentOfOre);
+		if(totalOre == 0) {
+			resultText.append("&emsp;No ores selected.<br />");
+		} else {
+			for (Map.Entry<BaseOreType, Integer> e : totalForOreEntry.entrySet()) {
+				BaseOreType baseOreEntry = e.getKey();
+				Integer value = e.getValue();
+				double percentOfOre = (double) value / (double) totalOre * 100D;
+				resultText.append("&emsp;").append(baseOreEntry.presentableName).append(" x ").append(value).append(" (").append(String.format("%.2f", percentOfOre)).append("%)");
+				resultText.append("<br />");
+				percentForOreEntry.put(baseOreEntry, percentOfOre);
+			}
 		}
 		resultText.append("<p style=\"font-weight: bold;\">Outputs:</p>");
 		A:
@@ -124,8 +128,12 @@ public class VesselContainer {
 				currentOutputResult = alloyType;
 			}
 		}
-
-		resultText.append(currentOutputResult == null ? "&emsp;Unknown Metal!" : "&emsp;" + currentOutputResult.outputName + " x " + totalOre).append("<br />");
+		if(totalOre == 0) {
+			resultText.append("&emsp;Nothing.<br />");
+		} else {
+			
+			resultText.append(currentOutputResult == null ? "&emsp;Unknown Metal!" : "&emsp;" + currentOutputResult.outputName + " x " + totalOre).append("<br />");
+		}
 		resultText.append("<br /><p style=\"font-weight: bold;\">Closest Alloy Results:</p>");
 		for (AlloyType alloyType : currentPossibleResults) {
 			if (alloyType.entries.length == 1) {

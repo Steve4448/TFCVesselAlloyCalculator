@@ -1,6 +1,5 @@
 package tfcalloycalculator;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -441,7 +440,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 							}
 						}
 					});
-					resultLabel.setText(VesselContainer.getResultingString());
+					updateResultingString();
 					jfcAlloyCalculator.setVisible(true);
 				} catch(IOException | IllegalArgumentException e) {
 					JOptionPane.showMessageDialog(jfcAlloyCalculator, "Could not load ore textures.", "IO Error", JOptionPane.ERROR_MESSAGE);

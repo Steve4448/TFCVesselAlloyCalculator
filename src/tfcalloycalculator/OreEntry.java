@@ -25,11 +25,15 @@ public final class OreEntry extends ImageIcon {
 
 	public final BaseOreType baseType;
 	public final Type type;
+	public final int column;
+	public final int row;
 	public Color color = Color.GRAY;
 
-	public OreEntry(BaseOreType baseType, Type type) throws IOException {
+	public OreEntry(BaseOreType baseType, Type type, int column, int row) throws IOException {
 		this.baseType = baseType;
 		this.type = type;
+		this.column = column;
+		this.row = row;
 		setImage(getScaledImage(getTexturePathForType(baseType.presentableName, type), 32, 32));
 	}
 

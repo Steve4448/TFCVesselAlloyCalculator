@@ -296,19 +296,19 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void vesselLabel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel1MouseReleased
-        VesselContainer.completelyClear(0);
+        VesselContainer.remove(0, evt.isShiftDown());
     }//GEN-LAST:event_vesselLabel1MouseReleased
 
     private void vesselLabel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel2MouseReleased
-        VesselContainer.completelyClear(1);
+        VesselContainer.remove(1, evt.isShiftDown());
     }//GEN-LAST:event_vesselLabel2MouseReleased
 
     private void vesselLabel3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel3MouseReleased
-        VesselContainer.completelyClear(2);
+        VesselContainer.remove(2, evt.isShiftDown());
     }//GEN-LAST:event_vesselLabel3MouseReleased
 
     private void vesselLabel4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel4MouseReleased
-        VesselContainer.completelyClear(3);
+        VesselContainer.remove(3, evt.isShiftDown());
     }//GEN-LAST:event_vesselLabel4MouseReleased
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
@@ -330,18 +330,12 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 			java.util.logging.Logger.getLogger(TFCVesselAlloyCalculator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
 		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		//</editor-fold>
-		
-		//</editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				
-				//TODO: Config and show how much each type is worth unit-wise.
 				TFCVesselAlloyCalculator jfcAlloyCalculator = new TFCVesselAlloyCalculator();
 				try {
 					VesselContainer.guiComponents[0] = jfcAlloyCalculator.vesselLabel1;
@@ -350,8 +344,10 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 					VesselContainer.guiComponents[3] = jfcAlloyCalculator.vesselLabel4;
 					
 					DefaultTableModel tableModel = (DefaultTableModel) oreSelectionTable.getModel();
+					int row = 0;
 					for(BaseOreType baseType : BaseOreType.values()) {
-						tableModel.addRow(new Object[] {new OreEntry(baseType, OreEntry.Type.SMALL), new OreEntry(baseType, OreEntry.Type.POOR), new OreEntry(baseType, OreEntry.Type.REGULAR), new OreEntry(baseType, OreEntry.Type.RICH)});
+						tableModel.addRow(new Object[] {new OreEntry(baseType, OreEntry.Type.SMALL, 0, row), new OreEntry(baseType, OreEntry.Type.POOR, 1, row), new OreEntry(baseType, OreEntry.Type.REGULAR, 2, row), new OreEntry(baseType, OreEntry.Type.RICH, 3, row)});
+						row++;
 					}
 					oreSelectionTable.addMouseListener(new MouseAdapter() {
 						int pressClickedRow = -1;
@@ -375,22 +371,18 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 									case MouseEvent.BUTTON1:
 										if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreEntry) {
 											OreEntry selection = (OreEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
-											if(VesselContainer.add(selection)) {
-												selection.color = Color.WHITE;
+											if(VesselContainer.add(selection, e.isShiftDown())) {
 												tableModel.fireTableCellUpdated(clickedRow, clickedColumn);
 											}
-											updateResultingString();
 										}
 										break;
 									case MouseEvent.BUTTON3:
 										if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreEntry) {
 											oreSelectionTable.changeSelection(clickedRow, clickedColumn, false, false);
 											OreEntry selection = (OreEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
-											if(VesselContainer.remove(selection)) {
-												selection.color = Color.GRAY;
+											if(VesselContainer.remove(selection, e.isShiftDown())) {
 												tableModel.fireTableCellUpdated(clickedRow, clickedColumn);
 											}
-											updateResultingString();
 										}
 										break;
 								}
@@ -407,24 +399,21 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 							if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreEntry) {
 								OreEntry selection = (OreEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
 								if(rotation < 0) {
-									if(VesselContainer.add(selection)) {
-										selection.color = Color.WHITE;
+									if(VesselContainer.add(selection, false)) {
 										tableModel.fireTableCellUpdated(clickedRow, clickedColumn);
 									}
 								} else if(rotation > 0) {
-									if(VesselContainer.remove(selection)) {
-										selection.color = Color.GRAY;
+									if(VesselContainer.remove(selection, false)) {
 										tableModel.fireTableCellUpdated(clickedRow, clickedColumn);
 									}
 								}
-								updateResultingString();
 							}
 						}
 					});
 					resultLabel.setText(VesselContainer.getResultingString());
 					jfcAlloyCalculator.setVisible(true);
 				} catch(IOException | IllegalArgumentException e) {
-					JOptionPane.showMessageDialog(jfcAlloyCalculator, "Could not load ore texture.", "IO Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(jfcAlloyCalculator, "Could not load ore textures.", "IO Error", JOptionPane.ERROR_MESSAGE);
 					System.exit(1);
 				}
 			}

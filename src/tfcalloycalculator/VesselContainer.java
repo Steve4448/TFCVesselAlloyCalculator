@@ -15,11 +15,17 @@ public class VesselContainer {
 
 	public static final int MAX_STACK_SIZE = 16;
 
+	private static int[] currentContentsCount = new int[4];
+	private static int[] currentContentsAmounts = new int[4];
 	public static OreEntry[] currentContents = new OreEntry[4];
-	public static int[] currentContentsCount = new int[4];
-	public static int[] currentContentsAmounts = new int[4];
 	public static JLabel[] guiComponents = new JLabel[4];
 	
+	/**
+	 * Searches for a slot in the vessel and adds/fills the ore to it.
+	 * @param toAdd the ore to be added.
+	 * @param fillStack If the slot should be filled to <code>MAX_STACK_SIZE</code>
+	 * @return true if the ore was added.
+	 */
 	public static boolean add(OreEntry toAdd, boolean fillStack) {
 		for (int i = 0; i < currentContents.length; i++) {
 			if (currentContents[i] == toAdd) {
@@ -32,7 +38,7 @@ public class VesselContainer {
 					currentContentsAmounts[i] += amt * toAdd.type.amount;
 					guiComponents[i].setText("" + currentContentsCount[i]);
 					updateResultingString();
-					return false;
+					return true;
 				}
 			}
 		}
@@ -52,6 +58,12 @@ public class VesselContainer {
 		return false;
 	}
 	
+	/**
+	 * Searches for an ore within the vessel and removes it.
+	 * @param toRemove the ore to be removed.
+	 * @param removeAll if all of the ore within the slot found should be removed.
+	 * @return true if the ore was removed.
+	 */
 	public static boolean remove(OreEntry toRemove, boolean removeAll) {
 		for (int i = currentContents.length - 1; i >= 0; i--) {
 			if (currentContents[i] == toRemove) {
@@ -62,6 +74,11 @@ public class VesselContainer {
 		return false;
 	}
 	
+	/**
+	 * Removes an ore from the vessel at a specific slot.
+	 * @param vesselSlotId the slot to remove the ore from.
+	 * @param removeAll if all the ore within that slot should be removed.
+	 */
 	public static void remove(int vesselSlotId, boolean removeAll) {
 		if (removeAll || --currentContentsCount[vesselSlotId] <= 0) {
 			completelyClear(vesselSlotId);
@@ -72,6 +89,9 @@ public class VesselContainer {
 		updateResultingString();
 	}
 
+	/**
+	 * @return The lists the inputs, outputs, and closest matches of the current vessel contents.
+	 */
 	public static String getResultingString() {
 		StringBuilder resultText = new StringBuilder();
 		resultText.append("<html><p style=\"font-weight: bold;\">Inputs:</p>");
@@ -132,7 +152,7 @@ public class VesselContainer {
 			resultText.append("&emsp;Nothing.<br />");
 		} else {
 			
-			resultText.append(currentOutputResult == null ? "&emsp;Unknown Metal!" : "&emsp;" + currentOutputResult.outputName + " x " + totalOre).append("<br />");
+			resultText.append(currentOutputResult == null ? "&emsp;<font color=\"#FF0000\">Unknown Metal</font>!" : "&emsp;" + currentOutputResult.outputName + " x " + totalOre).append("<br />");
 		}
 		resultText.append("<br /><p style=\"font-weight: bold;\">Closest Alloy Results:</p>");
 		for (AlloyType alloyType : currentPossibleResults) {
@@ -173,7 +193,11 @@ public class VesselContainer {
 		return resultText.toString();
 	}
 
-	public static void completelyClear(int vesselSlotId) {
+	/**
+	 * Sets the vessel slot to be completely empty and updates the UI.
+	 * @param vesselSlotId the slot to be emptied.
+	 */
+	private static void completelyClear(int vesselSlotId) {
 		if (currentContents[vesselSlotId] != null) {
 			boolean stillSameOreInVessel = false;
 			for (int i2 = 0; i2 < currentContents.length; i2++) {

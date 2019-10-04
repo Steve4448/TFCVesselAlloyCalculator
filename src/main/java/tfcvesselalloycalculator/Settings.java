@@ -1,4 +1,4 @@
-package tfcalloycalculator;
+package tfcvesselalloycalculator;
 
 
 public class Settings {

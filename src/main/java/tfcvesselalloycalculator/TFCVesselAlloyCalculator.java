@@ -1,4 +1,4 @@
-package tfcalloycalculator;
+package tfcvesselalloycalculator;
 
 import java.awt.Component;
 import java.awt.Point;
@@ -18,6 +18,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 		CASSITERITE("Cassiterite"),
 		BISMUTHINITE("Bismuthinite"),
 		SPHALERITE("Sphalerite"),
+		//GARNIERITE("Garnierite"),
 		GOLD("Native Gold"),
 		SILVER("Native Silver");
 		
@@ -44,6 +45,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 		COPPER("Copper", new AlloyTypeEntry(BaseOreType.COPPER, 100, 100)),
 		TIN("Tin", new AlloyTypeEntry(BaseOreType.CASSITERITE, 100, 100)),
 		BISMUTH("Bismuth", new AlloyTypeEntry(BaseOreType.BISMUTHINITE, 100, 100)),
+		//NICKEL("Nickel", new AlloyTypeEntry(BaseOreType.GARNIERITE, 100, 100)),
 		ZINC("Zinc", new AlloyTypeEntry(BaseOreType.SPHALERITE, 100, 100)),
 		GOLD("Gold", new AlloyTypeEntry(BaseOreType.GOLD, 100, 100)),
 		SILVER("Silver", new AlloyTypeEntry(BaseOreType.SILVER, 100, 100)),
@@ -72,19 +74,53 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 		STERLING_SILVER("Sterling Silver", new AlloyTypeEntry[] {
 			new AlloyTypeEntry(BaseOreType.COPPER, 20, 40),
 			new AlloyTypeEntry(BaseOreType.SILVER, 60, 80)
-		});
+		})/*,
+		
+		
+		//Non-Vanilla TFC alloys
+		
+		//Shurgent's TFCTech Addon:
+		ELECTRUM("Electrum", new AlloyTypeEntry[] {
+			new AlloyTypeEntry(BaseOreType.GOLD, 37, 63),
+			new AlloyTypeEntry(BaseOreType.SILVER, 37, 63)
+		}, true),
+		CONSTANTAN("Constantan", new AlloyTypeEntry[] {
+			new AlloyTypeEntry(BaseOreType.COPPER, 55, 65),
+			new AlloyTypeEntry(BaseOreType.GARNIERITE, 35, 45)
+		}, true),
+		
+		//TFC Pewter:
+		PEWTER("Pewter", new AlloyTypeEntry[] {
+			new AlloyTypeEntry(BaseOreType.CASSITERITE, 85, 99),
+			new AlloyTypeEntry(BaseOreType.COPPER, 1, 15)
+		}, true)*/;
 		
 		public final String outputName;
 		public final AlloyTypeEntry[] entries;
+		public final boolean nonVanilla;
 		
 		AlloyType(String outputName, AlloyTypeEntry entry) {
 			this.outputName = outputName;
 			this.entries = new AlloyTypeEntry[] {entry};
+			this.nonVanilla = false;
 		}
 		
 		AlloyType(String outputName, AlloyTypeEntry[] entries) {
 			this.outputName = outputName;
 			this.entries = entries;
+			this.nonVanilla = false;
+		}
+		
+		AlloyType(String outputName, AlloyTypeEntry entry, boolean nonVanilla) {
+			this.outputName = outputName;
+			this.entries = new AlloyTypeEntry[] {entry};
+			this.nonVanilla = nonVanilla;
+		}
+		
+		AlloyType(String outputName, AlloyTypeEntry[] entries, boolean nonVanilla) {
+			this.outputName = outputName;
+			this.entries = entries;
+			this.nonVanilla = nonVanilla;
 		}
 	}
 	
@@ -338,6 +374,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 		} catch(ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(TFCVesselAlloyCalculator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 		}
+		//</editor-fold>
 		//</editor-fold>
 
 		/* Create and display the form */

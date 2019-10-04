@@ -1,4 +1,4 @@
-package tfcalloycalculator;
+package tfcvesselalloycalculator;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import tfcalloycalculator.TFCVesselAlloyCalculator.BaseOreType;
+import tfcvesselalloycalculator.TFCVesselAlloyCalculator.BaseOreType;
 
 public final class OreEntry extends ImageIcon {
 

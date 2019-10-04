@@ -1,4 +1,4 @@
-package tfcalloycalculator;
+package tfcvesselalloycalculator;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
-import tfcalloycalculator.TFCVesselAlloyCalculator.AlloyType;
-import tfcalloycalculator.TFCVesselAlloyCalculator.AlloyTypeEntry;
-import tfcalloycalculator.TFCVesselAlloyCalculator.BaseOreType;
-import static tfcalloycalculator.TFCVesselAlloyCalculator.updateResultingString;
+import tfcvesselalloycalculator.TFCVesselAlloyCalculator.AlloyType;
+import tfcvesselalloycalculator.TFCVesselAlloyCalculator.AlloyTypeEntry;
+import tfcvesselalloycalculator.TFCVesselAlloyCalculator.BaseOreType;
+import static tfcvesselalloycalculator.TFCVesselAlloyCalculator.updateResultingString;
 
 public class VesselContainer {
 

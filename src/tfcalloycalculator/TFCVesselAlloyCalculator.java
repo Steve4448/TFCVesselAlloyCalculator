@@ -296,25 +296,35 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void vesselLabel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel1MouseReleased
-        VesselContainer.remove(0, evt.isShiftDown());
+       handleVesselClick(0, evt);
     }//GEN-LAST:event_vesselLabel1MouseReleased
 
     private void vesselLabel2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel2MouseReleased
-        VesselContainer.remove(1, evt.isShiftDown());
+       handleVesselClick(1, evt);
     }//GEN-LAST:event_vesselLabel2MouseReleased
 
     private void vesselLabel3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel3MouseReleased
-        VesselContainer.remove(2, evt.isShiftDown());
+        handleVesselClick(2, evt);
     }//GEN-LAST:event_vesselLabel3MouseReleased
 
     private void vesselLabel4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel4MouseReleased
-        VesselContainer.remove(3, evt.isShiftDown());
+        handleVesselClick(3, evt);
     }//GEN-LAST:event_vesselLabel4MouseReleased
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_settingsButtonActionPerformed
 
+	private void handleVesselClick(int slotId, MouseEvent evt) {
+		if(VesselContainer.currentContents[slotId] == null)
+			return;
+		if(evt.getButton() == MouseEvent.BUTTON1) {
+			VesselContainer.add(VesselContainer.currentContents[slotId], evt.isShiftDown());
+		} else if(evt.getButton() == MouseEvent.BUTTON3) {
+			VesselContainer.remove(slotId, evt.isShiftDown());
+		}
+	}
+	
 	/**
 	 * @param args the command line arguments
 	 */

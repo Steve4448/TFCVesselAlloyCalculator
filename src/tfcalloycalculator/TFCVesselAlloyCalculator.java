@@ -128,7 +128,6 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 return tip;
             }
         };
-        descriptionLabel = new javax.swing.JLabel();
         vesselSpacingPanel = new javax.swing.JPanel();
         vesselLabel1 = new javax.swing.JLabel();
         vesselLabel2 = new javax.swing.JLabel();
@@ -136,10 +135,12 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
         vesselLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         resultLabel = new javax.swing.JLabel();
+        settingsButton = new javax.swing.JButton();
+        descriptionLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TFC Vessel Alloy Calculator");
-        setMinimumSize(new java.awt.Dimension(700, 300));
+        setMinimumSize(new java.awt.Dimension(725, 300));
 
         oreSelectionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -163,24 +164,17 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
         oreSelectionTable.setTableHeader(null);
         jScrollPane1.setViewportView(oreSelectionTable);
 
-        descriptionLabel.setText("Left click / scroll up to add a entry to the vessel, right click / scroll down to remove.");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(descriptionLabel)
-                .addContainerGap(16, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(descriptionLabel))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
 
         vesselLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -225,7 +219,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
         vesselSpacingPanelLayout.setHorizontalGroup(
             vesselSpacingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(vesselSpacingPanelLayout.createSequentialGroup()
-                .addGap(61, 61, 61)
+                .addGap(62, 62, 62)
                 .addGroup(vesselSpacingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(vesselLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vesselLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -233,7 +227,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 .addGroup(vesselSpacingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(vesselLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vesselLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         vesselSpacingPanelLayout.setVerticalGroup(
             vesselSpacingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,19 +245,33 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
         resultLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jScrollPane2.setViewportView(resultLabel);
 
+        settingsButton.setText("Settings");
+        settingsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsButtonActionPerformed(evt);
+            }
+        });
+
+        descriptionLabel.setText("<html>\nLeft click / scroll up to add a entry to the vessel, right click / scroll down to remove.<br />\nShift+click to quickly add/remove stacks at a time.\n</html>");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(settingsButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -271,12 +279,16 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(settingsButton)))
                 .addContainerGap())
         );
 
@@ -298,6 +310,10 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
     private void vesselLabel4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel4MouseReleased
         VesselContainer.completelyClear(3);
     }//GEN-LAST:event_vesselLabel4MouseReleased
+
+    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_settingsButtonActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -426,6 +442,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable oreSelectionTable;
     public static javax.swing.JLabel resultLabel;
+    private javax.swing.JButton settingsButton;
     private javax.swing.JLabel vesselLabel1;
     private javax.swing.JLabel vesselLabel2;
     private javax.swing.JLabel vesselLabel3;

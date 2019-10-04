@@ -44,6 +44,7 @@ public class VesselContainer {
 				guiComponents[i].setIcon(toAdd);
 				guiComponents[i].setText("" + currentContentsCount[i]);
 				toAdd.color = Color.WHITE;
+				((DefaultTableModel) TFCVesselAlloyCalculator.oreSelectionTable.getModel()).fireTableCellUpdated(currentContents[i].row, currentContents[i].column);
 				updateResultingString();
 				return true;
 			}
@@ -166,17 +167,17 @@ public class VesselContainer {
 
 	public static void completelyClear(int vesselSlotId) {
 		if (currentContents[vesselSlotId] != null) {
-			boolean stillHas = false;
+			boolean stillSameOreInVessel = false;
 			for (int i2 = 0; i2 < currentContents.length; i2++) {
 				if (i2 == vesselSlotId) {
 					continue;
 				}
 				if (currentContents[i2] == currentContents[vesselSlotId]) {
-					stillHas = true;
+					stillSameOreInVessel = true;
 					break;
 				}
 			}
-			if (!stillHas) {
+			if (!stillSameOreInVessel) {
 				currentContents[vesselSlotId].color = Color.GRAY;
 				TFCVesselAlloyCalculator.oreSelectionTable.repaint();
 				((DefaultTableModel) TFCVesselAlloyCalculator.oreSelectionTable.getModel()).fireTableCellUpdated(currentContents[vesselSlotId].row, currentContents[vesselSlotId].column);

@@ -40,10 +40,6 @@
                       <Component id="vesselSpacingPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="settingsButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -61,10 +57,8 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="vesselSpacingPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane2" max="32767" attributes="0"/>
-                      <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                      <Component id="settingsButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -101,7 +95,7 @@
             <Component class="javax.swing.JTable" name="oreSelectionTable">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;Small (&quot; + OreEntry.Type.SMALL.amount + &quot; units)&quot;,&#xa;        &quot;Poor (&quot; + OreEntry.Type.POOR.amount + &quot; units)&quot;,&#xa;        &quot;Regular (&quot; + OreEntry.Type.REGULAR.amount + &quot; units)&quot;,&#xa;        &quot;Rich (&quot; + OreEntry.Type.RICH.amount + &quot; units)&quot;&#xa;    }&#xa;) {&#xa;    @Override&#xa;    public boolean isCellEditable(int i, int i1) {&#xa;        return false;&#xa;    }&#xa;}" type="code"/>
+                  <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;Small (&quot; + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.SMALL.getAmount() + &quot; units)&quot;,&#xa;        &quot;Poor (&quot; + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.POOR.getAmount() + &quot; units)&quot;,&#xa;        &quot;Regular (&quot; + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.REGULAR.getAmount() + &quot; units)&quot;,&#xa;        &quot;Rich (&quot; + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.RICH.getAmount() + &quot; units)&quot;&#xa;    }&#xa;) {&#xa;    @Override&#xa;    public boolean isCellEditable(int i, int i1) {&#xa;        return false;&#xa;    }&#xa;}" type="code"/>
                 </Property>
                 <Property name="rowHeight" type="int" value="32"/>
                 <Property name="rowSelectionAllowed" type="boolean" value="false"/>
@@ -113,7 +107,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xa;    @Override&#xa;    public Class getColumnClass(int column) {&#xa;        return getValueAt(0, column).getClass();&#xa;    }&#xa;    @Override&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {&#xa;        Component comp = super.prepareRenderer(renderer, row, col);&#xa;        OreEntry value = (OreEntry)getModel().getValueAt(row, col);&#xa;        comp.setBackground(value.getBackgroundColor());&#xa;        return comp;&#xa;    }&#xa;&#x9;public String getToolTipText(MouseEvent e) {&#xa;&#x9;&#x9;String tip = null;&#xa;&#x9;&#x9;java.awt.Point p = e.getPoint();&#xa;&#x9;&#x9;int rowIndex = rowAtPoint(p);&#xa;&#x9;&#x9;int colIndex = columnAtPoint(p);&#xa;&#x9;&#x9;if(getValueAt(rowIndex, colIndex) != null &amp;&amp; getValueAt(rowIndex, colIndex) instanceof OreEntry) {&#xa;&#x9;&#x9;&#x9;tip = ((OreEntry)getValueAt(rowIndex, colIndex)).getTooltip();&#xa;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;return tip;&#xa;&#x9;}&#xa;}"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xa;    @Override&#xa;    public Class getColumnClass(int column) {&#xa;        return getValueAt(0, column).getClass();&#xa;    }&#xa;    @Override&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {&#xa;        Component comp = super.prepareRenderer(renderer, row, col);&#xa;        tfcvesselalloycalculator.ui.OreTableEntry value = (tfcvesselalloycalculator.ui.OreTableEntry)getModel().getValueAt(row, col);&#xa;        comp.setBackground(value.getBackgroundColor());&#xa;        return comp;&#xa;    }&#xa;&#x9;public String getToolTipText(MouseEvent e) {&#xa;&#x9;&#x9;String tip = null;&#xa;&#x9;&#x9;java.awt.Point p = e.getPoint();&#xa;&#x9;&#x9;int rowIndex = rowAtPoint(p);&#xa;&#x9;&#x9;int colIndex = columnAtPoint(p);&#xa;&#x9;&#x9;if(getValueAt(rowIndex, colIndex) != null &amp;&amp; getValueAt(rowIndex, colIndex) instanceof tfcvesselalloycalculator.ui.OreTableEntry) {&#xa;&#x9;&#x9;&#x9;tip = ((tfcvesselalloycalculator.ui.OreTableEntry)getValueAt(rowIndex, colIndex)).getTooltip();&#xa;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;return tip;&#xa;&#x9;}&#xa;}"/>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="TFCVesselAlloyCalculator_jTable1"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
               </AuxValues>
@@ -159,17 +153,14 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="vesselLabel1">
+        <Component class="tfcvesselalloycalculator.vessel.VesselSlot" name="vesselLabel1">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
-            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Default Cursor"/>
-            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[64, 64]"/>
             </Property>
@@ -178,14 +169,14 @@
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="vesselLabel1MouseReleased"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="vesselLabel2">
+        <Component class="tfcvesselalloycalculator.vessel.VesselSlot" name="vesselLabel2">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[64, 64]"/>
             </Property>
@@ -194,14 +185,14 @@
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="vesselLabel2MouseReleased"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="vesselLabel4">
+        <Component class="tfcvesselalloycalculator.vessel.VesselSlot" name="vesselLabel4">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[64, 64]"/>
             </Property>
@@ -210,14 +201,14 @@
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="vesselLabel4MouseReleased"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="vesselLabel3">
+        <Component class="tfcvesselalloycalculator.vessel.VesselSlot" name="vesselLabel3">
           <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
                 <EtchetBorder/>
               </Border>
             </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[64, 64]"/>
             </Property>
@@ -232,25 +223,30 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="resultLabel">
+        <Component class="javax.swing.JTextPane" name="resultField">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Please select some ores."/>
-            <Property name="verticalAlignment" type="int" value="1"/>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xd;&#xa;  &lt;head&gt;&#xd;&#xa;&#xd;&#xa;  &lt;/head&gt;&#xd;&#xa;  &lt;body&gt;&#xd;&#xa;    &lt;p style=&quot;margin-top: 0&quot;&gt;&#xd;&#xa;      &#xd;Please select some ores.&#xa;    &lt;/p&gt;&#xd;&#xa;  &lt;/body&gt;&#xd;&#xa;&lt;/html&gt;&#xd;&#xa;"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="autoscrolls" type="boolean" value="false"/>
+            <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+              <Color id="Default Cursor"/>
+            </Property>
+            <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[5, 5, 5, 5]"/>
+            </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="DefaultCaret caret = (DefaultCaret)resultField.getCaret();&#xa;caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="settingsButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Settings"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="settingsButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="descriptionLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;Left click / scroll up to add a entry to the vessel, right click / scroll down to remove.&lt;br /&gt;&#xa;Shift+click to quickly add/remove stacks at a time.&#xa;&lt;/html&gt;"/>

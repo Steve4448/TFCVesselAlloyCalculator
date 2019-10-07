@@ -1,131 +1,42 @@
 package tfcvesselalloycalculator;
 
+import tfcvesselalloycalculator.ui.OreTableEntry;
+import tfcvesselalloycalculator.vessel.VesselRecipe;
+import tfcvesselalloycalculator.vessel.VesselContainer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.google.gson.stream.JsonReader;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import javax.swing.text.DefaultCaret;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import tfcvesselalloycalculator.vessel.VesselSlot;
 
 public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
-	public static enum BaseOreType {
-		COPPER("Native Copper"),
-		CASSITERITE("Cassiterite"),
-		BISMUTHINITE("Bismuthinite"),
-		SPHALERITE("Sphalerite"),
-		//GARNIERITE("Garnierite"),
-		GOLD("Native Gold"),
-		SILVER("Native Silver");
-		
-		public final String presentableName;
-		
-		BaseOreType(String presentableName) {
-			this.presentableName = presentableName;
-		}
-	}
-	
-	public static class AlloyTypeEntry {
-		public final BaseOreType baseType;
-		public final double requiredPercentMin;
-		public final double requiredPercentMax;
-		
-		public AlloyTypeEntry(BaseOreType baseType, double requiredPercentMin, double requiredPercentMax) {
-			this.baseType = baseType;
-			this.requiredPercentMin = requiredPercentMin;
-			this.requiredPercentMax = requiredPercentMax;
-		}
-	}
-	
-	public static enum AlloyType {
-		COPPER("Copper", new AlloyTypeEntry(BaseOreType.COPPER, 100, 100)),
-		TIN("Tin", new AlloyTypeEntry(BaseOreType.CASSITERITE, 100, 100)),
-		BISMUTH("Bismuth", new AlloyTypeEntry(BaseOreType.BISMUTHINITE, 100, 100)),
-		//NICKEL("Nickel", new AlloyTypeEntry(BaseOreType.GARNIERITE, 100, 100)),
-		ZINC("Zinc", new AlloyTypeEntry(BaseOreType.SPHALERITE, 100, 100)),
-		GOLD("Gold", new AlloyTypeEntry(BaseOreType.GOLD, 100, 100)),
-		SILVER("Silver", new AlloyTypeEntry(BaseOreType.SILVER, 100, 100)),
-		BISMUTH_BRONZE("Bismuth Bronze", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.SPHALERITE, 20, 30),
-			new AlloyTypeEntry(BaseOreType.COPPER, 50, 65),
-			new AlloyTypeEntry(BaseOreType.BISMUTHINITE, 10, 20)
-		}),
-		BLACK_BRONZE("Black Bronze", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.COPPER, 50, 70),
-			new AlloyTypeEntry(BaseOreType.SILVER, 10, 25),
-			new AlloyTypeEntry(BaseOreType.GOLD, 10, 25)
-		}),
-		BRONZE("Bronze", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.COPPER, 88, 92),
-			new AlloyTypeEntry(BaseOreType.CASSITERITE, 8, 12)
-		}),
-		BRASS("Brass", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.COPPER, 88, 92),
-			new AlloyTypeEntry(BaseOreType.SPHALERITE, 8, 12)
-		}),
-		ROSE_GOLD("Rose Gold", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.COPPER, 15, 30),
-			new AlloyTypeEntry(BaseOreType.GOLD, 70, 85)
-		}),
-		STERLING_SILVER("Sterling Silver", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.COPPER, 20, 40),
-			new AlloyTypeEntry(BaseOreType.SILVER, 60, 80)
-		})/*,
-		
-		
-		//Non-Vanilla TFC alloys
-		
-		//Shurgent's TFCTech Addon:
-		ELECTRUM("Electrum", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.GOLD, 37, 63),
-			new AlloyTypeEntry(BaseOreType.SILVER, 37, 63)
-		}, true),
-		CONSTANTAN("Constantan", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.COPPER, 55, 65),
-			new AlloyTypeEntry(BaseOreType.GARNIERITE, 35, 45)
-		}, true),
-		
-		//TFC Pewter:
-		PEWTER("Pewter", new AlloyTypeEntry[] {
-			new AlloyTypeEntry(BaseOreType.CASSITERITE, 85, 99),
-			new AlloyTypeEntry(BaseOreType.COPPER, 1, 15)
-		}, true)*/;
-		
-		public final String outputName;
-		public final AlloyTypeEntry[] entries;
-		public final boolean nonVanilla;
-		
-		AlloyType(String outputName, AlloyTypeEntry entry) {
-			this.outputName = outputName;
-			this.entries = new AlloyTypeEntry[] {entry};
-			this.nonVanilla = false;
-		}
-		
-		AlloyType(String outputName, AlloyTypeEntry[] entries) {
-			this.outputName = outputName;
-			this.entries = entries;
-			this.nonVanilla = false;
-		}
-		
-		AlloyType(String outputName, AlloyTypeEntry entry, boolean nonVanilla) {
-			this.outputName = outputName;
-			this.entries = new AlloyTypeEntry[] {entry};
-			this.nonVanilla = nonVanilla;
-		}
-		
-		AlloyType(String outputName, AlloyTypeEntry[] entries, boolean nonVanilla) {
-			this.outputName = outputName;
-			this.entries = entries;
-			this.nonVanilla = nonVanilla;
-		}
-	}
+	public static Settings settings;
+	public static VesselContainer vesselContainer;
+	public static ResourceHelper resourceHelper;
 	
 	public TFCVesselAlloyCalculator() {
 		initComponents();
+		vesselContainer = new VesselContainer(new VesselSlot[] {vesselLabel1, vesselLabel2, vesselLabel3, vesselLabel4});
 	}
 
 	/**
@@ -147,7 +58,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
             @Override
             public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
                 Component comp = super.prepareRenderer(renderer, row, col);
-                OreEntry value = (OreEntry)getModel().getValueAt(row, col);
+                tfcvesselalloycalculator.ui.OreTableEntry value = (tfcvesselalloycalculator.ui.OreTableEntry)getModel().getValueAt(row, col);
                 comp.setBackground(value.getBackgroundColor());
                 return comp;
             }
@@ -156,21 +67,20 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 java.awt.Point p = e.getPoint();
                 int rowIndex = rowAtPoint(p);
                 int colIndex = columnAtPoint(p);
-                if(getValueAt(rowIndex, colIndex) != null && getValueAt(rowIndex, colIndex) instanceof OreEntry) {
-                    tip = ((OreEntry)getValueAt(rowIndex, colIndex)).getTooltip();
+                if(getValueAt(rowIndex, colIndex) != null && getValueAt(rowIndex, colIndex) instanceof tfcvesselalloycalculator.ui.OreTableEntry) {
+                    tip = ((tfcvesselalloycalculator.ui.OreTableEntry)getValueAt(rowIndex, colIndex)).getTooltip();
                 }
 
                 return tip;
             }
         };
         vesselSpacingPanel = new javax.swing.JPanel();
-        vesselLabel1 = new javax.swing.JLabel();
-        vesselLabel2 = new javax.swing.JLabel();
-        vesselLabel4 = new javax.swing.JLabel();
-        vesselLabel3 = new javax.swing.JLabel();
+        vesselLabel1 = new tfcvesselalloycalculator.vessel.VesselSlot();
+        vesselLabel2 = new tfcvesselalloycalculator.vessel.VesselSlot();
+        vesselLabel4 = new tfcvesselalloycalculator.vessel.VesselSlot();
+        vesselLabel3 = new tfcvesselalloycalculator.vessel.VesselSlot();
         jScrollPane2 = new javax.swing.JScrollPane();
-        resultLabel = new javax.swing.JLabel();
-        settingsButton = new javax.swing.JButton();
+        resultField = new javax.swing.JTextPane();
         descriptionLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -182,10 +92,10 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Small (" + OreEntry.Type.SMALL.amount + " units)",
-                "Poor (" + OreEntry.Type.POOR.amount + " units)",
-                "Regular (" + OreEntry.Type.REGULAR.amount + " units)",
-                "Rich (" + OreEntry.Type.RICH.amount + " units)"
+                "Small (" + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.SMALL.getAmount() + " units)",
+                "Poor (" + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.POOR.getAmount() + " units)",
+                "Regular (" + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.REGULAR.getAmount() + " units)",
+                "Rich (" + tfcvesselalloycalculator.vessel.VesselRecipe.Ore.SizeType.RICH.getAmount() + " units)"
             }
         ) {
             @Override
@@ -212,9 +122,8 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
-        vesselLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        vesselLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        vesselLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel1.setPreferredSize(new java.awt.Dimension(64, 64));
         vesselLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -222,8 +131,8 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
             }
         });
 
-        vesselLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        vesselLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel2.setPreferredSize(new java.awt.Dimension(64, 64));
         vesselLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -231,8 +140,8 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
             }
         });
 
-        vesselLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        vesselLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel4.setPreferredSize(new java.awt.Dimension(64, 64));
         vesselLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -240,8 +149,8 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
             }
         });
 
-        vesselLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        vesselLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         vesselLabel3.setPreferredSize(new java.awt.Dimension(64, 64));
         vesselLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -276,16 +185,17 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                     .addComponent(vesselLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        resultLabel.setText("Please select some ores.");
-        resultLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jScrollPane2.setViewportView(resultLabel);
-
-        settingsButton.setText("Settings");
-        settingsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                settingsButtonActionPerformed(evt);
-            }
-        });
+        resultField.setEditable(false);
+        resultField.setContentType("text/html"); // NOI18N
+        resultField.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        resultField.setText("<html>\r\n  <head>\r\n\r\n  </head>\r\n  <body>\r\n    <p style=\"margin-top: 0\">\r\n      \rPlease select some ores.\n    </p>\r\n  </body>\r\n</html>\r\n");
+        resultField.setToolTipText("");
+        resultField.setAutoscrolls(false);
+        resultField.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        resultField.setMargin(new java.awt.Insets(5, 5, 5, 5));
+        jScrollPane2.setViewportView(resultField);
+        DefaultCaret caret = (DefaultCaret)resultField.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
         descriptionLabel.setText("<html>\nLeft click / scroll up to add a entry to the vessel, right click / scroll down to remove.<br />\nShift+click to quickly add/remove stacks at a time.\n</html>");
 
@@ -303,10 +213,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(settingsButton)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -321,9 +228,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(settingsButton)))
+                        .addComponent(jScrollPane2)))
                 .addContainerGap())
         );
 
@@ -346,18 +251,12 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
         handleVesselClick(3, evt);
     }//GEN-LAST:event_vesselLabel4MouseReleased
 
-    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_settingsButtonActionPerformed
-
 	private void handleVesselClick(int slotId, MouseEvent evt) {
-		if(VesselContainer.currentContents[slotId] == null)
-			return;
-		if(evt.getButton() == MouseEvent.BUTTON1) {
-			VesselContainer.add(VesselContainer.currentContents[slotId], evt.isShiftDown());
-		} else if(evt.getButton() == MouseEvent.BUTTON3) {
-			VesselContainer.remove(slotId, evt.isShiftDown());
-		}
+		//if(evt.getButton() == MouseEvent.BUTTON1) {
+		//	vesselContainer.add(vesselContainer.slots[slotId].getOreType(), evt.isShiftDown());
+		//} else if(evt.getButton() == MouseEvent.BUTTON3) {
+			vesselContainer.remove(slotId, evt.isShiftDown());
+		//}
 	}
 	
 	/**
@@ -376,18 +275,35 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 		}
 		//</editor-fold>
 		//</editor-fold>
-
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				
-				TFCVesselAlloyCalculator jfcAlloyCalculator = new TFCVesselAlloyCalculator();
 				try {
-					VesselContainer.guiComponents[0] = jfcAlloyCalculator.vesselLabel1;
-					VesselContainer.guiComponents[1] = jfcAlloyCalculator.vesselLabel2;
-					VesselContainer.guiComponents[2] = jfcAlloyCalculator.vesselLabel3;
-					VesselContainer.guiComponents[3] = jfcAlloyCalculator.vesselLabel4;
+					Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(VesselRecipe.Ore.SizeType.class, new JsonSerializer<VesselRecipe.Ore.SizeType>() {
+						@Override
+						public JsonElement serialize(VesselRecipe.Ore.SizeType t, java.lang.reflect.Type type, JsonSerializationContext jsc) {
+							JsonObject jsonSizeType = new JsonObject();
+							jsonSizeType.addProperty("sizeType", t.toString());
+							jsonSizeType.addProperty("sizeInUnits", t.getAmount());
+							return jsonSizeType;
+						}
+					}).registerTypeAdapter(VesselRecipe.Ore.SizeType.class, new JsonDeserializer<VesselRecipe.Ore.SizeType>() {
+						@Override
+						public VesselRecipe.Ore.SizeType deserialize(JsonElement je, java.lang.reflect.Type type, JsonDeserializationContext jdc) throws JsonParseException {
+							JsonObject jsonSizeType = je.getAsJsonObject();
+							VesselRecipe.Ore.SizeType sizeTypeVal = VesselRecipe.Ore.SizeType.valueOf(jsonSizeType.get("sizeType").getAsString());
+							sizeTypeVal.setAmount(jsonSizeType.get("sizeInUnits").getAsInt());
+							return sizeTypeVal;
+						}
+					}).create();
+					
+					//String settingGson = gson.toJson(settings = new Settings());
+					//System.out.println(settingGson);
+					
+					resourceHelper = new ResourceHelper();
+					settings = gson.fromJson(new JsonReader(new BufferedReader(new InputStreamReader(resourceHelper.getResource("TFCVesselAlloyCalculatorSettings.json").openStream()))), Settings.class);
+					TFCVesselAlloyCalculator jfcAlloyCalculator = new TFCVesselAlloyCalculator();
 					
 					MouseWheelListener vesselMouseWheelListener = new MouseWheelListener() {
 						@Override
@@ -402,14 +318,14 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 							} else if(e.getComponent() == jfcAlloyCalculator.vesselLabel4) {
 								vesselSlot = 3;
 							}
-							if(vesselSlot == -1 || VesselContainer.currentContents[vesselSlot] == null)
+							if(vesselSlot == -1 || vesselContainer.slots[vesselSlot].getOreType() == null)
 								return;
 							
 							int rotation = e.getWheelRotation();
 							if(rotation < 0) {
-								VesselContainer.add(VesselContainer.currentContents[vesselSlot], false);
+								vesselContainer.add(vesselContainer.slots[vesselSlot].getOreType(), false);
 							} else if(rotation > 0) {
-								VesselContainer.remove(VesselContainer.currentContents[vesselSlot], false);
+								vesselContainer.remove(vesselContainer.slots[vesselSlot].getOreType(), false);
 							}
 						}
 					};
@@ -419,11 +335,15 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 					jfcAlloyCalculator.vesselLabel4.addMouseWheelListener(vesselMouseWheelListener);
 					
 					DefaultTableModel tableModel = (DefaultTableModel) oreSelectionTable.getModel();
-					int row = 0;
-					for(BaseOreType baseType : BaseOreType.values()) {
-						tableModel.addRow(new Object[] {new OreEntry(baseType, OreEntry.Type.SMALL, 0, row), new OreEntry(baseType, OreEntry.Type.POOR, 1, row), new OreEntry(baseType, OreEntry.Type.REGULAR, 2, row), new OreEntry(baseType, OreEntry.Type.RICH, 3, row)});
-						row++;
+					
+					for(int row = 0; row < settings.ores.length; row++) {
+						OreTableEntry[] rowEntries = new OreTableEntry[VesselRecipe.Ore.SizeType.values().length];
+						for(int column = 0; column < rowEntries.length; column++) {
+							rowEntries[column] = new OreTableEntry(settings.ores[row], VesselRecipe.Ore.SizeType.values()[column], column, row);
+						}
+						tableModel.addRow(rowEntries);
 					}
+					
 					oreSelectionTable.addMouseListener(new MouseAdapter() {
 						int pressClickedRow = -1;
 						int pressClickedColumn = -1;
@@ -444,16 +364,16 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 							if(clickedRow == pressClickedRow && clickedColumn == pressClickedColumn && mouseClickType == e.getButton()) {
 								switch(mouseClickType) {
 									case MouseEvent.BUTTON1:
-										if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreEntry) {
-											OreEntry selection = (OreEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
-											VesselContainer.add(selection, e.isShiftDown());
+										if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreTableEntry) {
+											OreTableEntry selection = (OreTableEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
+											vesselContainer.add(selection, e.isShiftDown());
 										}
 										break;
 									case MouseEvent.BUTTON3:
-										if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreEntry) {
+										if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreTableEntry) {
 											oreSelectionTable.changeSelection(clickedRow, clickedColumn, false, false);
-											OreEntry selection = (OreEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
-											VesselContainer.remove(selection, e.isShiftDown());
+											OreTableEntry selection = (OreTableEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
+											vesselContainer.remove(selection, e.isShiftDown());
 										}
 										break;
 								}
@@ -467,12 +387,12 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 							int clickedRow = oreSelectionTable.rowAtPoint(contextMenuOpenedAt);
 							int clickedColumn = oreSelectionTable.columnAtPoint(contextMenuOpenedAt);
 							int rotation = e.getWheelRotation();
-							if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreEntry) {
-								OreEntry selection = (OreEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
+							if(oreSelectionTable.getValueAt(clickedRow, clickedColumn) instanceof OreTableEntry) {
+								OreTableEntry selection = (OreTableEntry)oreSelectionTable.getValueAt(clickedRow, clickedColumn);
 								if(rotation < 0) {
-									VesselContainer.add(selection, false);
+									vesselContainer.add(selection, false);
 								} else if(rotation > 0) {
-									VesselContainer.remove(selection, false);
+									vesselContainer.remove(selection, false);
 								}
 							}
 						}
@@ -480,7 +400,8 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 					updateResultingString();
 					jfcAlloyCalculator.setVisible(true);
 				} catch(IOException | IllegalArgumentException e) {
-					JOptionPane.showMessageDialog(jfcAlloyCalculator, "Could not load ore textures.", "IO Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Could not load ore textures.", "IO Error", JOptionPane.ERROR_MESSAGE);
+					e.printStackTrace();
 					System.exit(1);
 				}
 			}
@@ -488,7 +409,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 	}
 	
 	public static void updateResultingString() {
-		resultLabel.setText(VesselContainer.getResultingString());
+		resultField.setText(vesselContainer.getResultingString());
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -497,12 +418,11 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable oreSelectionTable;
-    public static javax.swing.JLabel resultLabel;
-    private javax.swing.JButton settingsButton;
-    private javax.swing.JLabel vesselLabel1;
-    private javax.swing.JLabel vesselLabel2;
-    private javax.swing.JLabel vesselLabel3;
-    private javax.swing.JLabel vesselLabel4;
+    public static javax.swing.JTextPane resultField;
+    private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel1;
+    private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel2;
+    private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel3;
+    private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel4;
     private javax.swing.JPanel vesselSpacingPanel;
     // End of variables declaration//GEN-END:variables
 }

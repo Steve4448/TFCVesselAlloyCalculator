@@ -1,202 +1,202 @@
 {
-  "sizes": [
-    {
-      "sizeType": "SMALL",
-      "sizeInUnits": 10
-    },
-    {
-      "sizeType": "POOR",
-      "sizeInUnits": 15
-    },
-    {
-      "sizeType": "REGULAR",
-      "sizeInUnits": 25
-    },
-    {
-      "sizeType": "RICH",
-      "sizeInUnits": 35
-    }
-  ],
-  "ores": [
-    {
-      "name": "Native Copper"
-    },
-    {
-      "name": "Cassiterite"
-    },
-    {
-      "name": "Bismuthinite"
-    },
-    {
-      "name": "Sphalerite"
-    },
-    {
-      "name": "Native Gold"
-    },
-    {
-      "name": "Native Silver"
-    }
-  ],
-  "recipes": [
-    {
-      "name": "Copper",
-      "ingredient": [
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 100.0,
-          "requiredPercentMax": 100.0
-        }
-      ]
-    },
-    {
-      "name": "Tin",
-      "ingredient": [
-        {
-          "requiredOre": "Cassiterite",
-          "requiredPercentMin": 100.0,
-          "requiredPercentMax": 100.0
-        }
-      ]
-    },
-    {
-      "name": "Bismuth",
-      "ingredient": [
-        {
-          "requiredOre": "Bismuthinite",
-          "requiredPercentMin": 100.0,
-          "requiredPercentMax": 100.0
-        }
-      ]
-    },
-    {
-      "name": "Zinc",
-      "ingredient": [
-        {
-          "requiredOre": "Sphalerite",
-          "requiredPercentMin": 100.0,
-          "requiredPercentMax": 100.0
-        }
-      ]
-    },
-    {
-      "name": "Gold",
-      "ingredient": [
-        {
-          "requiredOre": "Native Gold",
-          "requiredPercentMin": 100.0,
-          "requiredPercentMax": 100.0
-        }
-      ]
-    },
-    {
-      "name": "Silver",
-      "ingredient": [
-        {
-          "requiredOre": "Native Silver",
-          "requiredPercentMin": 100.0,
-          "requiredPercentMax": 100.0
-        }
-      ]
-    },
-    {
-      "name": "Bismuth Bronze",
-      "ingredient": [
-        {
-          "requiredOre": "Sphalerite",
-          "requiredPercentMin": 20.0,
-          "requiredPercentMax": 30.0
-        },
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 50.0,
-          "requiredPercentMax": 65.0
-        },
-        {
-          "requiredOre": "Bismuthinite",
-          "requiredPercentMin": 10.0,
-          "requiredPercentMax": 20.0
-        }
-      ]
-    },
-    {
-      "name": "Black Bronze",
-      "ingredient": [
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 50.0,
-          "requiredPercentMax": 70.0
-        },
-        {
-          "requiredOre": "Native Silver",
-          "requiredPercentMin": 10.0,
-          "requiredPercentMax": 25.0
-        },
-        {
-          "requiredOre": "Native Gold",
-          "requiredPercentMin": 10.0,
-          "requiredPercentMax": 25.0
-        }
-      ]
-    },
-    {
-      "name": "Bronze",
-      "ingredient": [
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 88.0,
-          "requiredPercentMax": 92.0
-        },
-        {
-          "requiredOre": "Cassiterite",
-          "requiredPercentMin": 8.0,
-          "requiredPercentMax": 12.0
-        }
-      ]
-    },
-    {
-      "name": "Brass",
-      "ingredient": [
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 88.0,
-          "requiredPercentMax": 92.0
-        },
-        {
-          "requiredOre": "Sphalerite",
-          "requiredPercentMin": 8.0,
-          "requiredPercentMax": 12.0
-        }
-      ]
-    },
-    {
-      "name": "Rose Gold",
-      "ingredient": [
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 15.0,
-          "requiredPercentMax": 30.0
-        },
-        {
-          "requiredOre": "Native Gold",
-          "requiredPercentMin": 70.0,
-          "requiredPercentMax": 85.0
-        }
-      ]
-    },
-    {
-      "name": "Sterling Silver",
-      "ingredient": [
-        {
-          "requiredOre": "Native Copper",
-          "requiredPercentMin": 20.0,
-          "requiredPercentMax": 40.0
-        },
-        {
-          "requiredOre": "Native Silver",
-          "requiredPercentMin": 60.0,
-          "requiredPercentMax": 80.0
-        }
-      ]
-    }
-  ]
+	"sizes": [
+		{
+			"sizeType": "SMALL",
+			"sizeInUnits": 10
+		},
+		{
+			"sizeType": "POOR",
+			"sizeInUnits": 15
+		},
+		{
+			"sizeType": "REGULAR",
+			"sizeInUnits": 25
+		},
+		{
+			"sizeType": "RICH",
+			"sizeInUnits": 35
+		}
+	],
+	"ores": [
+		{
+			"name": "Native Copper"
+		},
+		{
+			"name": "Cassiterite"
+		},
+		{
+			"name": "Bismuthinite"
+		},
+		{
+			"name": "Sphalerite"
+		},
+		{
+			"name": "Native Gold"
+		},
+		{
+			"name": "Native Silver"
+		}
+	],
+	"recipes": [
+		{
+			"name": "Copper",
+			"ingredient": [
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 100.0,
+					"requiredPercentMax": 100.0
+				}
+			]
+		},
+		{
+			"name": "Tin",
+			"ingredient": [
+				{
+					"requiredOre": "Cassiterite",
+					"requiredPercentMin": 100.0,
+					"requiredPercentMax": 100.0
+				}
+			]
+		},
+		{
+			"name": "Bismuth",
+			"ingredient": [
+				{
+					"requiredOre": "Bismuthinite",
+					"requiredPercentMin": 100.0,
+					"requiredPercentMax": 100.0
+				}
+			]
+		},
+		{
+			"name": "Zinc",
+			"ingredient": [
+				{
+					"requiredOre": "Sphalerite",
+					"requiredPercentMin": 100.0,
+					"requiredPercentMax": 100.0
+				}
+			]
+		},
+		{
+			"name": "Gold",
+			"ingredient": [
+				{
+					"requiredOre": "Native Gold",
+					"requiredPercentMin": 100.0,
+					"requiredPercentMax": 100.0
+				}
+			]
+		},
+		{
+			"name": "Silver",
+			"ingredient": [
+				{
+					"requiredOre": "Native Silver",
+					"requiredPercentMin": 100.0,
+					"requiredPercentMax": 100.0
+				}
+			]
+		},
+		{
+			"name": "Bismuth Bronze",
+			"ingredient": [
+				{
+					"requiredOre": "Sphalerite",
+					"requiredPercentMin": 20.0,
+					"requiredPercentMax": 30.0
+				},
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 50.0,
+					"requiredPercentMax": 65.0
+				},
+				{
+					"requiredOre": "Bismuthinite",
+					"requiredPercentMin": 10.0,
+					"requiredPercentMax": 20.0
+				}
+			]
+		},
+		{
+			"name": "Black Bronze",
+			"ingredient": [
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 50.0,
+					"requiredPercentMax": 70.0
+				},
+				{
+					"requiredOre": "Native Silver",
+					"requiredPercentMin": 10.0,
+					"requiredPercentMax": 25.0
+				},
+				{
+					"requiredOre": "Native Gold",
+					"requiredPercentMin": 10.0,
+					"requiredPercentMax": 25.0
+				}
+			]
+		},
+		{
+			"name": "Bronze",
+			"ingredient": [
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 88.0,
+					"requiredPercentMax": 92.0
+				},
+				{
+					"requiredOre": "Cassiterite",
+					"requiredPercentMin": 8.0,
+					"requiredPercentMax": 12.0
+				}
+			]
+		},
+		{
+			"name": "Brass",
+			"ingredient": [
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 88.0,
+					"requiredPercentMax": 92.0
+				},
+				{
+					"requiredOre": "Sphalerite",
+					"requiredPercentMin": 8.0,
+					"requiredPercentMax": 12.0
+				}
+			]
+		},
+		{
+			"name": "Rose Gold",
+			"ingredient": [
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 15.0,
+					"requiredPercentMax": 30.0
+				},
+				{
+					"requiredOre": "Native Gold",
+					"requiredPercentMin": 70.0,
+					"requiredPercentMax": 85.0
+				}
+			]
+		},
+		{
+			"name": "Sterling Silver",
+			"ingredient": [
+				{
+					"requiredOre": "Native Copper",
+					"requiredPercentMin": 20.0,
+					"requiredPercentMax": 40.0
+				},
+				{
+					"requiredOre": "Native Silver",
+					"requiredPercentMin": 60.0,
+					"requiredPercentMax": 80.0
+				}
+			]
+		}
+	]
 }

@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import static tfcvesselalloycalculator.TFCVesselAlloyCalculator.resourceHelper;
 
 public final class OreTableEntry extends ImageIcon {
+
 	private final VesselRecipe.Ore ore;
 	private final String tooltip;
 	private final VesselRecipe.Ore.SizeType sizeType;
@@ -71,7 +72,7 @@ public final class OreTableEntry extends ImageIcon {
 
 		return resizedImg;
 	}
-	
+
 	public VesselRecipe.Ore getOre() {
 		return ore;
 	}

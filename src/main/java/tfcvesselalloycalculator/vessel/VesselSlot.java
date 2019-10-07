@@ -7,11 +7,13 @@ import tfcvesselalloycalculator.TFCVesselAlloyCalculator;
 import tfcvesselalloycalculator.ui.OreTableEntry;
 
 public class VesselSlot extends JLabel {
+
 	public static final int MAX_STACK_SIZE = 16;
 	private int oreCount = 0;
 	private OreTableEntry oreType = null;
-	
-	public VesselSlot() {}
+
+	public VesselSlot() {
+	}
 
 	public void set(OreTableEntry oreType, int oreCount) {
 		this.oreType = oreType;
@@ -25,11 +27,12 @@ public class VesselSlot extends JLabel {
 	public void setOreCount(int oreCount) {
 		setOreCount(oreCount, false);
 	}
-	
+
 	public void setOreCount(int oreCount, boolean updateTableComponent) {
-		if(oreType == null)
+		if(oreType == null) {
 			return;
-		
+		}
+
 		int prevValue = this.oreCount;
 		this.oreCount = oreCount;
 		if(prevValue <= 0 && oreCount > 0) {
@@ -44,10 +47,11 @@ public class VesselSlot extends JLabel {
 			}
 			oreType = null;
 		}
-		if(oreCount > 0)
+		if(oreCount > 0) {
 			setText(Integer.toString(oreCount));
-		else
+		} else {
 			setText("");
+		}
 	}
 
 	public OreTableEntry getOreType() {

@@ -379,6 +379,7 @@ public class SettingsWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         oreTypesTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         oreSizeSpinner = new javax.swing.JSpinner();
         jLabel1 = new javax.swing.JLabel();
@@ -432,12 +433,21 @@ public class SettingsWindow extends javax.swing.JFrame {
 
         jLabel5.setText("Double click an entry to edit its text.");
 
+        jButton1.setText("How to Add Textures");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(addNewOreTypeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -452,7 +462,8 @@ public class SettingsWindow extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addNewOreTypeButton)
                     .addComponent(removeSelectedOreTypeButton)
-                    .addComponent(jLabel5)))
+                    .addComponent(jLabel5)
+                    .addComponent(jButton1)))
         );
 
         oreSizesPane.addTab("Ore Types", jPanel2);
@@ -668,10 +679,19 @@ public class SettingsWindow extends javax.swing.JFrame {
 		}
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(jButton1, "There are 4 required files per ore:\n" +
+		OreTableEntry.getTexturePathForSize("EXAMPLE", VesselRecipe.Ore.SizeType.POOR) + "\n" +
+		OreTableEntry.getTexturePathForSize("EXAMPLE", VesselRecipe.Ore.SizeType.SMALL) + "\n" +
+		OreTableEntry.getTexturePathForSize("EXAMPLE", VesselRecipe.Ore.SizeType.REGULAR) + "\n" +
+		OreTableEntry.getTexturePathForSize("EXAMPLE", VesselRecipe.Ore.SizeType.RICH) + "\n");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addNewOreTypeButton;
     private javax.swing.JButton addNewOreTypeForRecipeButton;
     private javax.swing.JButton addNewRecipeButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

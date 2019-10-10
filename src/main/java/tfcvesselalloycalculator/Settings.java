@@ -1,27 +1,30 @@
 package tfcvesselalloycalculator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
 import tfcvesselalloycalculator.vessel.VesselRecipe;
 
 public class Settings {
 
-	public static final String COPPER = "Native Copper";
-	public static final String CASSITERITE = "Cassiterite";
-	public static final String BISMUTHINITE = "Bismuthinite";
-	public static final String SPHALERITE = "Sphalerite";
-	public static final String GOLD = "Native Gold";
-	public static final String SILVER = "Native Silver";
+	public static final VesselRecipe.Ore COPPER = new VesselRecipe.Ore("Native Copper");
+	public static final VesselRecipe.Ore CASSITERITE = new VesselRecipe.Ore("Cassiterite");
+	public static final VesselRecipe.Ore BISMUTHINITE = new VesselRecipe.Ore("Bismuthinite");
+	public static final VesselRecipe.Ore SPHALERITE = new VesselRecipe.Ore("Sphalerite");
+	public static final VesselRecipe.Ore GOLD = new VesselRecipe.Ore("Native Gold");
+	public static final VesselRecipe.Ore SILVER = new VesselRecipe.Ore("Native Silver");
 
-	public VesselRecipe.Ore.SizeType[] sizes = VesselRecipe.Ore.SizeType.values();
-	public VesselRecipe.Ore[] ores = {
-		new VesselRecipe.Ore(COPPER),
-		new VesselRecipe.Ore(CASSITERITE),
-		new VesselRecipe.Ore(BISMUTHINITE),
-		new VesselRecipe.Ore(SPHALERITE),
-		new VesselRecipe.Ore(GOLD),
-		new VesselRecipe.Ore(SILVER)
-	};
+	public ArrayList<VesselRecipe.Ore.SizeType> sizes = new ArrayList<>(Arrays.asList(VesselRecipe.Ore.SizeType.values()));
+	public ArrayList<VesselRecipe.Ore> ores = new ArrayList<>(Arrays.asList(new VesselRecipe.Ore[]{
+		COPPER,
+		CASSITERITE,
+		BISMUTHINITE,
+		SPHALERITE,
+		GOLD,
+		SILVER
+	}));
 
-	public VesselRecipe[] recipes = {
+	public CopyOnWriteArrayList<VesselRecipe> recipes = new CopyOnWriteArrayList<>(Arrays.asList(new VesselRecipe[]{
 		new VesselRecipe("Copper", new VesselRecipe.Ingredient[]{
 			new VesselRecipe.Ingredient(COPPER, 100, 100)
 		}),
@@ -66,5 +69,5 @@ public class Settings {
 			new VesselRecipe.Ingredient(COPPER, 20, 40),
 			new VesselRecipe.Ingredient(SILVER, 60, 80)
 		})
-	};
+	}));
 }

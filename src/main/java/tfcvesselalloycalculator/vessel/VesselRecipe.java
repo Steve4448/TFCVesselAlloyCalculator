@@ -1,5 +1,8 @@
 package tfcvesselalloycalculator.vessel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class VesselRecipe {
 
 	public static class Ore {
@@ -28,7 +31,7 @@ public class VesselRecipe {
 			}
 		}
 
-		private final String name;
+		private String name;
 
 		public Ore(String name) {
 			this.name = name;
@@ -37,34 +40,42 @@ public class VesselRecipe {
 		public String getName() {
 			return name;
 		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
 	}
 
 	public static class Ingredient {
 
-		public final String requiredOre;
-		public final double requiredPercentMin;
-		public final double requiredPercentMax;
+		public final Ore requiredOre;
+		public double requiredPercentMin;
+		public double requiredPercentMax;
 
-		public Ingredient(String requiredOre, double requiredPercentMin, double requiredPercentMax) {
+		public Ingredient(Ore requiredOre, double requiredPercentMin, double requiredPercentMax) {
 			this.requiredOre = requiredOre;
 			this.requiredPercentMin = requiredPercentMin;
 			this.requiredPercentMax = requiredPercentMax;
 		}
 	}
 
-	private final String name;
-	private final Ingredient[] ingredient;
+	private String name;
+	private final ArrayList<Ingredient> ingredient;
 
 	public VesselRecipe(String name, Ingredient[] ingredient) {
 		this.name = name;
-		this.ingredient = ingredient;
+		this.ingredient = new ArrayList<>(Arrays.asList(ingredient));
 	}
 
 	public String getName() {
 		return name;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	public Ingredient[] getIngredients() {
+	public ArrayList<Ingredient> getIngredients() {
 		return ingredient;
 	}
 }

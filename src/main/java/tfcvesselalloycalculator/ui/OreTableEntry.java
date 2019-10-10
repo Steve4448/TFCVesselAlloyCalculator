@@ -13,31 +13,13 @@ import static tfcvesselalloycalculator.TFCVesselAlloyCalculator.resourceHelper;
 public final class OreTableEntry extends ImageIcon {
 
 	private final VesselRecipe.Ore ore;
-	private final String tooltip;
 	private final VesselRecipe.Ore.SizeType sizeType;
 	private final int column;
 	private final int row;
 	private Color backgroundColor = Color.GRAY;
 
-	public OreTableEntry(VesselRecipe.Ore ore, VesselRecipe.Ore.SizeType sizeType, int column, int row) throws IOException {
+	public OreTableEntry(VesselRecipe.Ore ore, VesselRecipe.Ore.SizeType sizeType, int column, int row) {
 		this.ore = ore;
-		switch(sizeType) {
-			case SMALL:
-				tooltip = "Small " + ore.getName() + " (" + sizeType.getAmount() + " units)";
-				break;
-			case POOR:
-				tooltip = "Poor " + ore.getName() + " (" + sizeType.getAmount() + " units)";
-				break;
-			case REGULAR:
-				tooltip = "Regular " + ore.getName() + " (" + sizeType.getAmount() + " units)";
-				break;
-			case RICH:
-				tooltip = "Rich " + ore.getName() + " (" + sizeType.getAmount() + " units)";
-				break;
-			default:
-				tooltip = "Invalid size type for " + ore.getName();
-				break;
-		}
 		this.sizeType = sizeType;
 		this.column = column;
 		this.row = row;
@@ -62,12 +44,17 @@ public final class OreTableEntry extends ImageIcon {
 		return null;
 	}
 
-	public Image getScaledImage(String texPath, int w, int h) throws IOException, IllegalArgumentException {
+	public Image getScaledImage(String texPath, int w, int h) {
 		//System.out.println(texPath + " = " + getClass().getResource(texPath));
 		BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = resizedImg.createGraphics();
-
-		g2.drawImage(ImageIO.read(resourceHelper.getResource(texPath)), 0, 0, w, h, null);
+		try {
+			g2.drawImage(ImageIO.read(resourceHelper.getResource(texPath)), 0, 0, w, h, null);
+		} catch(IOException | IllegalArgumentException ex) {
+			g2.drawString("no", 0, 14);
+			g2.drawString("texture", 0, 28);
+			System.out.println(texPath + " missing.");
+		}
 		g2.dispose();
 
 		return resizedImg;
@@ -78,7 +65,18 @@ public final class OreTableEntry extends ImageIcon {
 	}
 
 	public String getTooltip() {
-		return tooltip;
+		switch(sizeType) {
+			case SMALL:
+				return "Small " + ore.getName() + " (" + sizeType.getAmount() + " units)";
+			case POOR:
+				return "Poor " + ore.getName() + " (" + sizeType.getAmount() + " units)";
+			case REGULAR:
+				return "Regular " + ore.getName() + " (" + sizeType.getAmount() + " units)";
+			case RICH:
+				return "Rich " + ore.getName() + " (" + sizeType.getAmount() + " units)";
+			default:
+				return "Invalid size type for " + ore.getName();
+		}
 	}
 
 	public VesselRecipe.Ore.SizeType getSizeType() {

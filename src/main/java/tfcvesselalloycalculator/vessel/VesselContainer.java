@@ -95,8 +95,8 @@ public class VesselContainer {
 	public String getResultingString() {
 		StringBuilder resultText = new StringBuilder();
 		resultText.append("<html><p style=\"font-weight: bold;\">Inputs:</p>");
-		HashMap<String, Integer> totalForOreType = new HashMap<>();
-		HashMap<String, Double> percentForOreType = new HashMap<>();
+		HashMap<VesselRecipe.Ore, Integer> totalForOreType = new HashMap<>();
+		HashMap<VesselRecipe.Ore, Double> percentForOreType = new HashMap<>();
 		VesselRecipe currentOutputResult = null;
 		ArrayList<VesselRecipe> currentPossibleResults = new ArrayList<>();
 
@@ -105,21 +105,21 @@ public class VesselContainer {
 			if(slots[i].getOreCount() > 0) {
 				int amt = slots[i].getOreCount() * slots[i].getOreType().getSizeType().getAmount();
 				totalOre += amt;
-				if(totalForOreType.containsKey(slots[i].getOreType().getOre().getName())) {
-					totalForOreType.put(slots[i].getOreType().getOre().getName(), totalForOreType.get(slots[i].getOreType().getOre().getName()) + amt);
+				if(totalForOreType.containsKey(slots[i].getOreType().getOre())) {
+					totalForOreType.put(slots[i].getOreType().getOre(), totalForOreType.get(slots[i].getOreType().getOre()) + amt);
 				} else {
-					totalForOreType.put(slots[i].getOreType().getOre().getName(), amt);
+					totalForOreType.put(slots[i].getOreType().getOre(), amt);
 				}
 			}
 		}
 		if(totalOre == 0) {
 			resultText.append("&emsp;No ores selected.<br />");
 		} else {
-			for(Map.Entry<String, Integer> e : totalForOreType.entrySet()) {
-				String oreTypeEntry = e.getKey();
+			for(Map.Entry<VesselRecipe.Ore, Integer> e : totalForOreType.entrySet()) {
+				VesselRecipe.Ore oreTypeEntry = e.getKey();
 				Integer value = e.getValue();
 				double percentOfOre = (double) value / (double) totalOre * 100D;
-				resultText.append("&emsp;").append(oreTypeEntry).append(" x ").append(value).append(" (").append(String.format("%.2f", percentOfOre)).append("%)");
+				resultText.append("&emsp;").append(oreTypeEntry.getName()).append(" x ").append(value).append(" (").append(String.format("%.2f", percentOfOre)).append("%)");
 				resultText.append("<br />");
 				percentForOreType.put(oreTypeEntry, percentOfOre);
 			}
@@ -127,7 +127,7 @@ public class VesselContainer {
 		resultText.append("<p style=\"font-weight: bold;\">Outputs:</p>");
 		A:
 		for(VesselRecipe recipe : TFCVesselAlloyCalculator.settings.recipes) {
-			for(String ore : totalForOreType.keySet()) {
+			for(VesselRecipe.Ore ore : totalForOreType.keySet()) {
 				boolean found = false;
 				for(VesselRecipe.Ingredient ingredient : recipe.getIngredients()) {
 					if(ore.equals(ingredient.requiredOre)) {
@@ -160,7 +160,7 @@ public class VesselContainer {
 		}
 		resultText.append("<br /><p style=\"font-weight: bold;\">Closest Alloy Results:</p>");
 		for(VesselRecipe recipe : currentPossibleResults) {
-			if(recipe.getIngredients().length == 1) {
+			if(recipe.getIngredients().size() == 1) {
 				continue;
 			}
 			resultText.append("&emsp;").append(recipe.getName()).append(": ");
@@ -172,7 +172,7 @@ public class VesselContainer {
 				if(!hasOre) {
 					resultText.append("<font color=\"#FF0000\">");
 				}
-				resultText.append(ingredient.requiredOre).append(" ");
+				resultText.append(ingredient.requiredOre.getName()).append(" ");
 				if(!hasOre) {
 					resultText.append("</font>");
 				}

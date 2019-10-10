@@ -5,6 +5,7 @@ import tfcvesselalloycalculator.vessel.VesselRecipe;
 import tfcvesselalloycalculator.vessel.VesselContainer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -22,11 +23,13 @@ import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import javax.swing.text.DefaultCaret;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import tfcvesselalloycalculator.ui.SettingsWindow;
 import tfcvesselalloycalculator.vessel.VesselSlot;
 
 public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
@@ -34,8 +37,12 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 	public static Settings settings;
 	public static VesselContainer vesselContainer;
 	public static ResourceHelper resourceHelper;
+	private final TFCVesselAlloyCalculator instance;
+	private SettingsWindow settingsWindow = null;
+	public static Gson gson;
 
 	public TFCVesselAlloyCalculator() {
+		instance = this;
 		initComponents();
 		vesselContainer = new VesselContainer(new VesselSlot[]{vesselLabel1, vesselLabel2, vesselLabel3, vesselLabel4});
 	}
@@ -81,6 +88,8 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         resultField = new javax.swing.JTextPane();
         descriptionLabel = new javax.swing.JLabel();
+        settingsButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TFC Vessel Alloy Calculator");
@@ -170,7 +179,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 .addGroup(vesselSpacingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(vesselLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(vesselLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(62, 62, 62))
         );
         vesselSpacingPanelLayout.setVerticalGroup(
             vesselSpacingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,6 +207,16 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 
         descriptionLabel.setText("<html>\nLeft click / scroll up to add a entry to the vessel, right click / scroll down to remove.<br />\nShift+click to quickly add/remove stacks at a time.\n</html>");
 
+        settingsButton.setText("Settings");
+        settingsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settingsButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Vessel Inventory");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,8 +229,13 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(settingsButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -221,13 +245,16 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(vesselSpacingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(descriptionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(settingsButton))
                 .addContainerGap())
         );
 
@@ -249,6 +276,21 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
     private void vesselLabel4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_vesselLabel4MouseReleased
 		handleVesselClick(3, evt);
     }//GEN-LAST:event_vesselLabel4MouseReleased
+
+    private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if(settingsWindow == null || !settingsWindow.isVisible()) {
+					settingsWindow = new SettingsWindow();
+					settingsWindow.setLocationRelativeTo(instance);
+					settingsWindow.setVisible(true);
+				} else {
+					settingsWindow.toFront();
+				}
+			}
+		});
+    }//GEN-LAST:event_settingsButtonActionPerformed
 
 	private void handleVesselClick(int slotId, MouseEvent evt) {
 		//if(evt.getButton() == MouseEvent.BUTTON1) {
@@ -279,7 +321,39 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 			@Override
 			public void run() {
 				try {
-					Gson gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(VesselRecipe.Ore.SizeType.class, new JsonSerializer<VesselRecipe.Ore.SizeType>() {
+					HashMap<String, VesselRecipe.Ore> oreMappings = new HashMap<>();
+					
+					gson = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(VesselRecipe.class, new JsonSerializer<VesselRecipe>() {
+						@Override
+						public JsonElement serialize(VesselRecipe t, java.lang.reflect.Type type, JsonSerializationContext jsc) {
+							JsonObject jsonRecipeType = new JsonObject();
+							jsonRecipeType.addProperty("name", t.getName());
+							JsonArray ingredientArray = new JsonArray();
+							for(VesselRecipe.Ingredient ingredient : t.getIngredients()) {
+								JsonObject ingredientEntry = new JsonObject();
+								ingredientEntry.addProperty("requiredOre", ingredient.requiredOre.getName());
+								ingredientEntry.addProperty("requiredPercentMin", ingredient.requiredPercentMin);
+								ingredientEntry.addProperty("requiredPercentMax", ingredient.requiredPercentMax);
+								ingredientArray.add(ingredientEntry);
+							}
+							jsonRecipeType.add("ingredient", ingredientArray);
+							return jsonRecipeType;
+						}
+					}).registerTypeAdapter(VesselRecipe.class, new JsonDeserializer<VesselRecipe>() {
+						@Override
+						public VesselRecipe deserialize(JsonElement je, java.lang.reflect.Type type, JsonDeserializationContext jdc) throws JsonParseException {
+							JsonObject jsonRecipeType = je.getAsJsonObject();
+							String name = jsonRecipeType.get("name").getAsString();
+							JsonArray ingredientArray = jsonRecipeType.get("ingredient").getAsJsonArray();
+							VesselRecipe.Ingredient[] ingredients = new VesselRecipe.Ingredient[ingredientArray.size()];
+							for(int i = 0; i < ingredientArray.size(); i++) {
+								JsonObject ingredientEntry = ingredientArray.get(i).getAsJsonObject();
+								ingredients[i] = new VesselRecipe.Ingredient(oreMappings.get(ingredientEntry.get("requiredOre").getAsString()), ingredientEntry.get("requiredPercentMin").getAsDouble(), ingredientEntry.get("requiredPercentMax").getAsDouble());
+							}
+							VesselRecipe newRecipe = new VesselRecipe(name, ingredients);
+							return newRecipe;
+						}
+					}).registerTypeAdapter(VesselRecipe.Ore.SizeType.class, new JsonSerializer<VesselRecipe.Ore.SizeType>() {
 						@Override
 						public JsonElement serialize(VesselRecipe.Ore.SizeType t, java.lang.reflect.Type type, JsonSerializationContext jsc) {
 							JsonObject jsonSizeType = new JsonObject();
@@ -295,10 +369,17 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 							sizeTypeVal.setAmount(jsonSizeType.get("sizeInUnits").getAsInt());
 							return sizeTypeVal;
 						}
+					}).registerTypeAdapter(VesselRecipe.Ore.class, new JsonDeserializer<VesselRecipe.Ore>() {
+						@Override
+						public VesselRecipe.Ore deserialize(JsonElement je, java.lang.reflect.Type type, JsonDeserializationContext jdc) throws JsonParseException {
+							JsonObject jsonOreType = je.getAsJsonObject();
+							String name = jsonOreType.get("name").getAsString();
+							VesselRecipe.Ore newOre = new VesselRecipe.Ore(name);
+							oreMappings.put(name, newOre);
+							return newOre;
+						}
 					}).create();
 
-					//String settingGson = gson.toJson(settings = new Settings());
-					//System.out.println(settingGson);
 					resourceHelper = new ResourceHelper();
 					settings = gson.fromJson(new JsonReader(new BufferedReader(new InputStreamReader(resourceHelper.getResource("TFCVesselAlloyCalculatorSettings.json").openStream()))), Settings.class);
 					TFCVesselAlloyCalculator jfcAlloyCalculator = new TFCVesselAlloyCalculator();
@@ -333,15 +414,7 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 					jfcAlloyCalculator.vesselLabel3.addMouseWheelListener(vesselMouseWheelListener);
 					jfcAlloyCalculator.vesselLabel4.addMouseWheelListener(vesselMouseWheelListener);
 
-					DefaultTableModel tableModel = (DefaultTableModel) oreSelectionTable.getModel();
-
-					for(int row = 0; row < settings.ores.length; row++) {
-						OreTableEntry[] rowEntries = new OreTableEntry[VesselRecipe.Ore.SizeType.values().length];
-						for(int column = 0; column < rowEntries.length; column++) {
-							rowEntries[column] = new OreTableEntry(settings.ores[row], VesselRecipe.Ore.SizeType.values()[column], column, row);
-						}
-						tableModel.addRow(rowEntries);
-					}
+					refreshOreModel();
 
 					oreSelectionTable.addMouseListener(new MouseAdapter() {
 						int pressClickedRow = -1;
@@ -400,12 +473,25 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 					updateResultingString();
 					jfcAlloyCalculator.setVisible(true);
 				} catch(IOException | IllegalArgumentException e) {
-					JOptionPane.showMessageDialog(null, "Could not load ore textures.", "IO Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Could not load json settings file.", "IO Error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 					System.exit(1);
 				}
 			}
 		});
+	}
+	
+	public static void refreshOreModel() {
+		DefaultTableModel tableModel = (DefaultTableModel) oreSelectionTable.getModel();
+		tableModel.setRowCount(0);
+		
+		for(int row = 0; row < settings.ores.size(); row++) {
+			OreTableEntry[] rowEntries = new OreTableEntry[VesselRecipe.Ore.SizeType.values().length];
+			for(int column = 0; column < rowEntries.length; column++) {
+				rowEntries[column] = new OreTableEntry(settings.ores.get(row), VesselRecipe.Ore.SizeType.values()[column], column, row);
+			}
+			tableModel.addRow(rowEntries);
+		}
 	}
 
 	public static void updateResultingString() {
@@ -414,11 +500,13 @@ public class TFCVesselAlloyCalculator extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel descriptionLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     public static javax.swing.JTable oreSelectionTable;
     public static javax.swing.JTextPane resultField;
+    private javax.swing.JButton settingsButton;
     private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel1;
     private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel2;
     private tfcvesselalloycalculator.vessel.VesselSlot vesselLabel3;
